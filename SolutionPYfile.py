@@ -37,6 +37,9 @@ consecutive_days = 0
 previous_employee = None
 previous_shift_end = None
 
+# Creating a text file to write the output
+output_file = open('output.txt', 'w')
+
 # Iterate over the dataframe
 for index, row in df.iterrows():
     current_employee = row['Employee Name']
@@ -54,15 +57,18 @@ for index, row in df.iterrows():
 
     # Task 1: Print employees who have worked for 7 consecutive days
     if consecutive_days >= 7:
-        print(f"{current_employee} has worked for 7 consecutive days.")
+        print(f"{current_employee} has worked for 7 consecutive days.", file=output_file)
 
     # Task 2a: Print employees who have less than 10 hours between shifts but more than 1 hour
     if previous_shift_end is not None and (current_time - previous_shift_end).total_seconds() < 36000 and (current_time - previous_shift_end).total_seconds() > 3600:
-        print(f"{current_employee} has less than 10 hours between shifts.")
+        print(f"{current_employee} has less than 10 hours between shifts.", file=output_file)
 
     # Task 2b: Print employees who have worked for more than 14 hours in a single shift
     if (row['Time Out'] - row['Time']).total_seconds() > 50400:
-        print(f"{current_employee} has worked for more than 14 hours in a single shift.")
+        print(f"{current_employee} has worked for more than 14 hours in a single shift.", file=output_file)
 
     previous_employee = current_employee
     previous_shift_end = row['Time Out']
+
+# Closing the output file
+output_file.close()
